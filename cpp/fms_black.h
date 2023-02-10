@@ -6,7 +6,7 @@
 
 namespace fms::black {
 
-	// z(k; f, s) = (log(k/f) + s^2/2)/s
+	// F = f exp(sZ - s^2/2 <= k  if and only if  Z <= z(k; f, s) = (log(k/f) + s^2/2)/s
 	inline double moneyness(double f, double s, double k)
 	{
 		if (f <= 0 or s <= 0 or k <= 0) {
@@ -16,7 +16,7 @@ namespace fms::black {
 		return log(k / f) / s + s / 2;
 	}
 
-	// E[max{k - F, 0} = k P(F <= k) - f P_s(F <= k)
+	// E[max{k - F, 0}] = k P(F <= k) - f P_s(F <= k)
 	inline double value_put(double f, double s, double k)
 	{
 		double z = moneyness(f, s, k);
@@ -31,5 +31,8 @@ namespace fms::black {
 
 		return -distribution::normal(z - s);
 	}
+
+	//!!! implement value_call
+	// E[max{F - k, 0}] = ...
 
 } // namespace fms::black
