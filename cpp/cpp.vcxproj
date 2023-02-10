@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="fms_black.h" />
     <ClInclude Include="fms_distribution_normal.h" />
   </ItemGroup>
   <ItemGroup>

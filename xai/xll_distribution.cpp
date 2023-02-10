@@ -6,7 +6,7 @@ using namespace fms;
 using namespace xll;
 
 AddIn xai_distribution_normal(
-	Function(XLL_DOUBLE, "xll_distribution_normal", "DISTRIBUTION.NORMAL")
+	Function(XLL_DOUBLE, "xll_distribution_normal", "NORMAL.CDF")
 	.Arguments({
 		Arg(XLL_DOUBLE, "z", "is the value at which to evaluate the standard normal cdf.")
 		})

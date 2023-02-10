@@ -22,4 +22,4 @@ namespace fms::distribution {
 		return 0;
 	}
 #endif
-}
+} // namespace fms::distribution
