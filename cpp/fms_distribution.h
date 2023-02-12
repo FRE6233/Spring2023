@@ -17,9 +17,13 @@ namespace fms::distribution {
 		{
 			assert(0.5 == normal(0));
 			assert(1 == normal(1) + normal(-1));
+			// https://www.wolframalpha.com/input?i=normal+cdf+calculator
+			assert(fabs(normal(-1) - 0.1587) <= 1e-4);
+			assert(fabs(normal(1) - 0.8413) <= 1e-4);
 		}
 
 		return 0;
 	}
 #endif
 } // namespace fms::distribution
+

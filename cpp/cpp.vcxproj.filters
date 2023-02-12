@@ -15,10 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="fms_distribution_normal.h">
+    <ClInclude Include="fms_distribution.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="fms_black.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fms_hypergeometric.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

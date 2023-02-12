@@ -1,5 +1,5 @@
 // xll_distribution.cpp - Probability distributions
-#include "../cpp/fms_distribution_normal.h"
+#include "../cpp/fms_distribution.h"
 #include "xai.h"
 
 using namespace fms;

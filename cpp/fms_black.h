@@ -2,7 +2,7 @@
 #pragma once
 #include <cmath>
 #include <stdexcept>
-#include "fms_distribution_normal.h"
+#include "fms_distribution.h"
 
 namespace fms::black {
 
@@ -32,7 +32,7 @@ namespace fms::black {
 		return -distribution::normal(z - s);
 	}
 
-	//!!! implement value_call
+	//!!! implement value_call using max{F - k, 0} - max{k - F, 0} = F - k
 	// E[max{F - k, 0}] = ...
 
 } // namespace fms::black
