@@ -30,4 +30,4 @@ double WINAPI xll_black_value_put(double f, double s, double k)
 	return result;
 }
 
-//!!! implement BLACK.VALUE.CALL
+//!!! implement BLACK.VALUE.DELTA and BLACK.VALUE.CALL
