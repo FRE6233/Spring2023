@@ -8,7 +8,7 @@
 namespace fms {
 
 	// Confluent hypergeometric function
-	// pFq(p0, ...; q0, ...; x) = sum_0^infty (p0)_n ... /(q0)_n ... x^n/n!
+	// pFq(p0, ...; q0, ...; x) = sum_{n>=0} (p0)_n ... /(q0)_n ... x^n/n!
 	// (q)_n = q(q + 1)...(q + n - 1), (q)_0 = 1
 	template<class C = double, class X = double>
 	inline X pFq(unsigned np, const C* p, unsigned nq, const C* q, X x, const auto& eps) 
@@ -45,7 +45,7 @@ namespace fms {
 		return pFq(1, &p, 1, &q, x, eps);
 	}
 	template<class C = double, class X = double>
-	inline X _2F1(C a, C b, C c, X x, const auto& eps)
+	inline X _2F1(C a, C b,/**/ C c, X x, const auto& eps)
 	{
 		C _p[2] = { a, b };
 		return pFq(2, _p, 1, &c, x, eps);
@@ -65,6 +65,19 @@ namespace fms {
 	{
 		double eps = sqrt(std::numeric_limits<X>::epsilon());
 		const auto Eps = [eps](const double& x) { return fabs(x) > eps; };
+		{
+			// (1 + x)^a = 1 + ax + a(a - 1)/2 x^2 + ... = sum_{n>=0}(a)_n x^n/n!
+			X as[] = { -0.1, 0, 0.1, 1, 2 };
+			X xs[] = { -0.5, 0, 0.5 };
+			for (X a : as) {
+				for (X x : xs) {
+					X F = pow(1 - x, -a); // 1F0(a,x)
+					X _F = pFq(1, &a, 0, (const X*)nullptr, x, Eps);
+					X dF = F - _F;
+					assert(fabs(dF) < 2*eps);
+				}
+			}
+		}
 		{
 			// _2F1(1, 1, 2, -x) = log(1 + x)/x;
 			X one = 1;

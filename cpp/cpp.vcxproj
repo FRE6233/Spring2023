@@ -134,6 +134,7 @@
     <ClInclude Include="fms_black.h" />
     <ClInclude Include="fms_distribution.h" />
     <ClInclude Include="fms_hypergeometric.h" />
+    <ClInclude Include="fms_root1d.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fms.t.cpp" />
