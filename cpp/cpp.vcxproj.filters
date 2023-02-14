@@ -27,6 +27,12 @@
     <ClInclude Include="fms_root1d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ensure.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fms_distribution_normal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fms.t.cpp">

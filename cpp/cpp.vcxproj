@@ -131,8 +131,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ensure.h" />
     <ClInclude Include="fms_black.h" />
     <ClInclude Include="fms_distribution.h" />
+    <ClInclude Include="fms_distribution_normal.h" />
     <ClInclude Include="fms_hypergeometric.h" />
     <ClInclude Include="fms_root1d.h" />
   </ItemGroup>

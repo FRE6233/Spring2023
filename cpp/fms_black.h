@@ -6,30 +6,30 @@
 
 namespace fms::black {
 
-	// F = f exp(sZ - s^2/2 <= k  if and only if  Z <= z(k; f, s) = (log(k/f) + s^2/2)/s
-	inline double moneyness(double f, double s, double k)
+	// F = f exp(sZ - kappa(s) <= k  if and only if  Z <= z(k; f, s) = (log(k/f) + kappa(s))/s
+	inline double moneyness(double f, double s, double k, const fms::distribution::base<>& m)
 	{
 		if (f <= 0 or s <= 0 or k <= 0) {
 			throw std::runtime_error(__FUNCTION__ ": arguments must be positive");
 		}
 
-		return log(k / f) / s + s / 2;
+		return (log(k / f) + m.cgf(s))/s;
 	}
 
 	// E[max{k - F, 0}] = k P(F <= k) - f P_s(F <= k)
-	inline double value_put(double f, double s, double k)
+	inline double value_put(double f, double s, double k, const fms::distribution::base<>& m)
 	{
-		double z = moneyness(f, s, k);
+		double z = moneyness(f, s, k, m);
 
-		return k * distribution::normal(z) - f * distribution::normal(z - s);
+		return k * m.cdf(z) - f * m.cdf(z, s);
 	}
 
 	// -P_s(F <= k)
-	inline double delta_put(double f, double s, double k)
+	inline double delta_put(double f, double s, double k, const fms::distribution::base<>& m)
 	{
-		double z = moneyness(f, s, k);
+		double z = moneyness(f, s, k, m);
 
-		return -distribution::normal(z - s);
+		return -m.cdf(z, s);
 	}
 
 	//!!! implement value_call using max{F - k, 0} - max{k - F, 0} = F - k
