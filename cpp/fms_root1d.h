@@ -25,7 +25,7 @@ namespace fms::root {
 		}
 		explicit operator bool() const
 		{		
-			return std::max(fabs(y0), fabs(y1)) > eps;
+			return std::max(fabs(y0), fabs(y1)) >= eps;
 		}
 		X operator*() const
 		{
@@ -39,12 +39,12 @@ namespace fms::root {
 			}
 			X y = f(x);
 			if (signbit(y) == signbit(y0)) {
-				y0 = y;
 				x0 = x;
+				y0 = y;
 			}
 			else {
-				y1 = y;
 				x1 = x;
+				y1 = y;
 			}
 		}
 
