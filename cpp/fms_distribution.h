@@ -1,4 +1,4 @@
-// fms_distribution.h - NVI standard distribution interface
+﻿// fms_distribution.h - NVI standard distribution interface
 // https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Non-Virtual_Interface
 #pragma once
 
@@ -8,7 +8,7 @@ namespace fms::distribution {
 	template<class X = double, class S = X>
 	struct base {
 
-		// Cumulative distrbution function P_s(X <= x) = E[e^{sX - cgf(s)}1(X <= x)]
+		// Cumulative distrbution function P_s(X <= x) = E[e^{sX - κ(s)}1(X <= x)]
 		X cdf(const X& x, const S& s = 0) const
 		{
 			return _cdf(x, s);
@@ -29,12 +29,12 @@ namespace fms::distribution {
 		}
 		
 		// Inverse of cdf
-		// X cdf(const X& x, const S& s = 0) const
+		// X inv(const X& x, const S& s = 0) const
 	private:
 		virtual X _cdf(const X&, const S&) const = 0;
 		virtual X _mgf(const S&) const = 0;
 		virtual X _cgf(const S&) const = 0;
-		// virtual X _cdf(const X& x, const S& s = 0) const = 0
+		// virtual X _inv(const X& x, const S& s = 0) const = 0
 	};
 
 } // namespace fms::distribution
