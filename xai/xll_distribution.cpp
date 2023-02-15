@@ -5,7 +5,7 @@
 using namespace fms;
 using namespace xll;
 
-distribution::normal<> normal;
+static distribution::normal<> normal;
 
 AddIn xai_distribution_normal(
 	Function(XLL_HANDLEX, "xll_distribution_normal", "DISTRIBUTION.NORMAL")

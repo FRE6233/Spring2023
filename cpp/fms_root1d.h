@@ -8,7 +8,7 @@
 
 namespace fms::root {
 
-	// Solve f(x) = 0
+	// Solve f(x) = 0 given bound [x0, x1]
 	template<class F, class X>
 	class secant {
 		F f;
@@ -16,8 +16,11 @@ namespace fms::root {
 		X y0, y1;
 	public:
 		secant(F _f, X _x0, X _x1, X eps = 0)
-			: f{ _f }, x0{ std::min(_x0, _x1) }, x1{ std::max(_x0, _x1) }, eps{ eps }
+			: f{ _f }, x0{ _x0 }, x1{ x_1 }, eps{ eps }
 		{
+			if (x0 > x1) {
+				std::swap(x0, x1);
+			}
 			y0 = f(x0);
 			y1 = f(x1);
 
