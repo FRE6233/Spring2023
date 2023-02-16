@@ -32,6 +32,7 @@ namespace fms::distribution {
 		{
 			return s*s/2;
 		}
+		// X _inv(const X& x, const S& s) const override
 #ifdef _DEBUG
 		static int test()
 		{

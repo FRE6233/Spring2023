@@ -6,15 +6,13 @@
 using namespace fms;
 using namespace xll;
 
-static distribution::normal<> N;
-
 AddIn xai_black_value_put(
 	Function(XLL_DOUBLE, "xll_black_value_put", "BLACK.VALUE.PUT")
 	.Arguments({
 		Arg(XLL_DOUBLE, "f", "is the forward value."),
 		Arg(XLL_DOUBLE, "s", "is the vol."),
 		Arg(XLL_DOUBLE, "k", "is the strike."),
-		Arg(XLL_HANDLEX, "m", "is a handle to a distribution. Default is normal.")
+		Arg(XLL_HANDLEX, "m", "is a handle to a distribution. Default is normal."),
 		})
 	.FunctionHelp("Return the Fischer Black value of a put.")
 	.Category(CATEGORY)
@@ -25,7 +23,10 @@ double WINAPI xll_black_value_put(double f, double s, double k, HANDLEX m)
 	double result = std::numeric_limits<double>::quiet_NaN();
 
 	try {
-		result = black::value_put(f, s, k);
+		fms::distribution::base<>* pm = model_pointer(m);
+		ensure(pm);
+
+		result = black::value_put(f, s, k, *pm);
 	}
 	catch (const std::exception& ex) {
 		XLL_ERROR(ex.what());
