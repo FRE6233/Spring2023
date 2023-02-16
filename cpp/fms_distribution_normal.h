@@ -38,6 +38,10 @@ namespace fms::distribution {
 		{
 			normal<> N;
 			{
+				ensure(1 / sqrt(2 * M_PI) == N.pdf(0));
+			}
+
+			{
 				ensure(0.5 == N.cdf(0));
 				ensure(1 == N.cdf(1) + N.cdf(-1));
 				// https://www.wolframalpha.com/input?i=normal+cdf+calculator

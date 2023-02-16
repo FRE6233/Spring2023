@@ -9,10 +9,8 @@ double machine_epsilon()
 {
 	double x = 1;
 
-	for (x = 1; x != 0; x /= 2) {
-		if (1 + x == 1) {
-			break;
-		}
+	while (1 + x != 1) {
+		x /= 2;
 	}
 
 	return x;
@@ -22,6 +20,7 @@ int main()
 {
 	double x = machine_epsilon();
 	assert(x != 0);
+	assert(1 + x == 1);
 	assert(x >= std::numeric_limits<double>::epsilon() / 2);
 
 	int test_2F1 = fms::test_2F1<>();
