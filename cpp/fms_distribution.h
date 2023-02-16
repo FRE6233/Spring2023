@@ -8,6 +8,11 @@ namespace fms::distribution {
 	template<class X = double, class S = X>
 	struct base {
 
+		// Probability density function.
+		X pdf(const X& x, const S& s)
+		{
+			return _pdf(x, s);
+		}
 		// Cumulative distrbution function P_s(X <= x) = E[e^{sX - cgf(s)}1(X <= x)]
 		X cdf(const X& x, const S& s = 0) const
 		{
@@ -31,6 +36,7 @@ namespace fms::distribution {
 		// Inverse of cdf
 		// X cdf(const X& x, const S& s = 0) const
 	private:
+		virtual X _pdf(const X&, const S&) const = 0;
 		virtual X _cdf(const X&, const S&) const = 0;
 		virtual X _mgf(const S&) const = 0;
 		virtual X _cgf(const S&) const = 0;
