@@ -54,9 +54,20 @@ namespace fms {
 	// (lower) incomplete gamma
 	// int_0^x t^{a - 1} e^{-t} dt 
 	template<class A, class X>
-	inline X incomplete_gamma(A a, const X& x, auto eps)
+	inline X incomplete_gamma(A a, const X& x, const auto& eps)
 	{
 		return (pow(x, a) * exp(x) / a) * _1F1(1, 1 + a, x, eps);
+	}
+
+	// erf(x) = 2x/sqrt(pi) 1F1(1/2, 3/2, -x^2)
+	// normal_cdf(x) = (1 + erf(x/sqrt(2)))/2
+	// (1 + (2x/srt2)/sqrt(pi) 1F1(1/2, 3/2, -(x/srt2)^2))/2
+	// 0.5 + x/srt2pi 1F1(1/2, 3/2, -x^2/2)
+#define M_SQRT2PI 2.5066282746310005024157652848110452530069867406099383166299235763
+	template<class X>
+	inline X normal(const X& x, const auto& eps)
+	{
+		return 0.5 + _1F1(0.5, 1.5, -x * x / 2, eps) * x / M_SQRT2PI;
 	}
 
 #ifdef _DEBUG
@@ -66,7 +77,7 @@ namespace fms {
 		double eps = sqrt(std::numeric_limits<X>::epsilon());
 		const auto Eps = [eps](const double& x) { return fabs(x) > eps; };
 		{
-			// (1 + x)^a = 1 + ax + a(a - 1)/2 x^2 + ... = sum_{n>=0}(a)_n x^n/n!
+			// (1 - x)^{-a} = 1 + ax + a(a + 1)/2 x^2 + ... = sum_{n>=0}(a)_n x^n/n!
 			X as[] = { -0.1, 0, 0.1, 1, 2 };
 			X xs[] = { -0.5, 0, 0.5 };
 			for (X a : as) {
@@ -105,6 +116,20 @@ namespace fms {
 				X de = e - _e;
 				assert(fabs(de) < eps);
 			}
+		}
+		{
+			double emax = -1, emin = 1;
+			for (double x = -2; x <= 2; x += 0.1) {
+				double e = (1 + erf(x) / M_SQRT2) / 2;
+				double e_ = normal(x, Eps);
+				if (e_ - e > emax) {
+					emax = e_ - e;
+				}
+				else if (e_ - e < emin) {
+					emin = e_ - e;
+				}
+			}
+			emax = emax;
 		}
 
 		return 0;

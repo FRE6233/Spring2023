@@ -6,6 +6,7 @@
 using namespace fms;
 using namespace xll;
 
+#if 0
 AddIn xai_black_value_put(
 	Function(XLL_DOUBLE, "xll_black_value_put", "BLACK.VALUE.PUT")
 	.Arguments({
@@ -36,3 +37,4 @@ double WINAPI xll_black_value_put(double f, double s, double k, HANDLEX m)
 }
 
 //!!! implement BLACK.VALUE.DELTA and BLACK.VALUE.CALL
+#endif // 0
