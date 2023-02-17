@@ -48,6 +48,10 @@ namespace fms::distribution {
 				ensure(fabs(N.cdf(-1) - 0.1587) <= 1e-4);
 				ensure(fabs(N.cdf(1) - 0.8413) <= 1e-4);
 			}
+			{
+				ensure(1 == N.mgf(0));
+				ensure(0 == N.cgf(0));
+			}
 
 			return 0;
 		}

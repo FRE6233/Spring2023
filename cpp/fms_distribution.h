@@ -36,7 +36,7 @@ namespace fms::distribution {
 		// Inverse of cdf
 		// X inv(const X& x, const S& s = 0) const
 	private:
-		virtual X _pdf(const X&, const S&) const = 0;
+		virtual X _pdf(const X&, const S&) const = 0; 
 		virtual X _cdf(const X&, const S&) const = 0;
 		virtual X _mgf(const S&) const = 0;
 		virtual X _cgf(const S&) const = 0;
