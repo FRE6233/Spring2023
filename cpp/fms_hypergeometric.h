@@ -7,12 +7,19 @@
 
 namespace fms {
 
-	// Confluent hypergeometric function
+	// Generalized hypergeometric function
 	// pFq(p0, ...; q0, ...; x) = sum_{n>=0} (p0)_n ... /(q0)_n ... x^n/n!
 	// (q)_n = q(q + 1)...(q + n - 1), (q)_0 = 1
 	template<class C = double, class X = double>
 	inline X pFq(unsigned np, const C* p, unsigned nq, const C* q, X x, const auto& eps) 
 	{
+		if (np > nq + 1) { // diverges
+			return x == 0 ? 0 : std::numeric_limits<X>::infinity();
+		}
+		if (np == nq + 1 and fabs(x) >= 1) {
+			return std::numeric_limits<X>::infinity();
+		}
+
 		C p_qn = 1; // (p0)_n .../(q0)_n ...
 		X x_n = 1;  // x^n/n!
 		X s = 1;    // n = 0
@@ -51,7 +58,7 @@ namespace fms {
 		return pFq(2, _p, 1, &c, x, eps);
 	}
 
-	// (lower) incomplete gamma
+	// (lower) incomplete gamma function
 	// int_0^x t^{a - 1} e^{-t} dt 
 	template<class A, class X>
 	inline X incomplete_gamma(A a, const X& x, auto eps)
@@ -66,13 +73,13 @@ namespace fms {
 		double eps = sqrt(std::numeric_limits<X>::epsilon());
 		const auto Eps = [eps](const double& x) { return fabs(x) > eps; };
 		{
-			// (1 + x)^a = 1 + ax + a(a - 1)/2 x^2 + ... = sum_{n>=0}(a)_n x^n/n!
+			// (1 - x)^{-a} = 1 + ax + a(a + 1)/2 x^2 + ... = sum_{n>=0}(a)_n x^n/n!
 			X as[] = { -0.1, 0, 0.1, 1, 2 };
 			X xs[] = { -0.5, 0, 0.5 };
 			for (X a : as) {
 				for (X x : xs) {
 					X F = pow(1 - x, -a); // 1F0(a,x)
-					X _F = pFq(1, &a, 0, (const X*)nullptr, x, Eps);
+					X _F = pFq(1, &a, 0, (const X*)nullptr, x, Eps); // 1F0(x)
 					X dF = F - _F;
 					assert(fabs(dF) < 2*eps);
 				}

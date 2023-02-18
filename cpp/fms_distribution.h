@@ -15,14 +15,14 @@ namespace fms::distribution {
 		}
 
 		// Moment generating function.
-		// E[e^{sX}]
+		// μ(s) = E[e^{sX}]
 		X mgf(const S& s) const
 		{
 			return _mgf(s);
 		}
 		
 		// Cumulant generating function.
-		// log E[e^{sX}]
+		// κ(s) = log E[e^{sX}]
 		X cgf(const S& s) const
 		{
 			return _cgf(s);
