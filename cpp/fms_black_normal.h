@@ -1,45 +1,52 @@
-// fms_black_normal.h - Self-contained Black forward model for put options.
+// fms_black_normal.h - Self-contained Black forward model for options.
+// Forward underlying at expiration is F = f exp(sZ - s^2/2), where Z is standard normal.
+// Note E[F g(F)] = f E[F/f g(F)] = f E_s[g(F)] is the _share_ measure.
+// Define N(z, s) = E_s[1(Z <= z)].
 #pragma once
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <limits>
 
-namespace fms::black {
+namespace fms::black::normal {
 
+	// Return NaN to indicate error instead of throwing an exception.
 	constexpr double NaN = std::numeric_limits<double>::quiet_NaN();
 
 	// Stanard normal cumulative distribution.
-	inline double normal(double z, double s = 0)
+	// N(z, s) = E[exp(sZ - s^2/2)1(Z <= z)] = P(Z + s <= z)
+	// using E[e^N g(M)] = E[e^N] E[g(M + Cov(N, M))], N, M jointly normal
+	inline double N(double z, double s = 0)
 	{
-		return 0.5 * (1 + erf((z - s) / M_SQRT2));
+		return 0.5 * (1 + std::erf((z - s) / M_SQRT2));
 	}
 
 	// F = f exp(sZ - s^2/2) <= k iff Z <= log(k/f)/2 + s/2
+	// Note dF/df = exp(sZ - s^2/2)
 	inline double moneyness(double f, double s, double k)
 	{
 		if (f <= 0 or s <= 0 or k <= 0) {
 			return NaN;
 		}
 
-		return log(k / f)/s + s/2;
+		return std::log(k / f)/s + s/2;
 	}
 
 	namespace put {
 		
-		// E[max{k - F}, 0]
+		// E[max{k - F}, 0] = k P(Z <= z) - f P_s(Z <= z)
 		inline double value(double f, double s, double k)
 		{
 			double z = moneyness(f, s, k);
 
-			return k * normal(z) - f * normal(z, s);
+			return k * N(z) - f * N(z, s);
 		}
 
-		// (d/df)E[max{k - F}, 0] = -P_s(F <= k)
+		// (d/df)E[max{k - F}, 0] = E[exp(sZ - s^2/2) 1(F <= k)] = -P_s(F <= k)
 		inline double delta(double f, double s, double k)
 		{
 			double z = moneyness(f, s, k);
 
-			return -normal(z, s);
+			return -N(z, s);
 		}
 
 		// Find s with p = put::value(f, s, k).

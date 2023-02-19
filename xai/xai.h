@@ -5,3 +5,7 @@
 #ifndef CATEGORY
 #define CATEGORY "FRE6233"
 #endif
+
+namespace xll {
+	constexpr double NaN = std::numeric_limits<double>::quiet_NaN();
+}

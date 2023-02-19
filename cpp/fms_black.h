@@ -1,83 +1,61 @@
 ﻿// fms_black.h - Fischer Black model.
+// F = f exp(sX - κ(s)), κ(s) = log E[exp(sX)], E[X] = 0, Var(X) = 1.
+// E[F] = f, Var(log(F)) = s^2.
 #pragma once
 #include <cmath>
 #include <stdexcept>
-#include "fms_distribution_normal.h"
+#include "fms_distribution.h"
 
-namespace fms {
-	namespace black {
+namespace fms::black {
 
-		// F = f exp(sZ - kappa(s) <= k  if and only if  Z <= z(k; f, s) = (log(k/f) + kappa(s))/s
-		template<class F = double, class S = double, class K = double>
-		inline auto moneyness(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>& m)
-		{
-			if (f <= 0 or s <= 0 or k <= 0) {
-				throw std::runtime_error(__FUNCTION__ ": arguments must be positive");
-			}
-
-			return (log(k / f) + m.cgf(s)) / s;
+	// F = f exp(sZ - κ(s) <= k  if and only if  Z <= z(k; f, s) = (log(k/f) + κ(s))/s
+	template<class F = double, class S = double, class K = double>
+	inline auto moneyness(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>* p)
+	{
+		if (f <= 0 or s <= 0 or k <= 0) {
+			throw std::runtime_error(__FUNCTION__ ": arguments must be positive");
 		}
+
+		return (log(k / f) + p->cgf(s)) / s;
+	}
+
+	namespace put {
 
 		// E[max{k - F, 0}] = k P(F <= k) - f P_s(F <= k)
 		template<class F = double, class S = double, class K = double>
-		inline auto value_put(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>& m)
+		inline auto value(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>* p)
 		{
-			double z = moneyness(f, s, k, m);
+			double z = moneyness(f, s, k, p);
 
-			return k * m.cdf(z) - f * m.cdf(z, s);
+			return k * p->cdf(z) - f * p->cdf(z, s);
 		}
 
-		// -P_s(F <= k)
+		// (d/df)E[max{k - F, 0}] = E[-exp(sX - κ(s)1(F <= k)] = -P_s(F <= k)
 		template<class F = double, class S = double, class K = double>
-		inline auto delta_put(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>& m)
+		inline auto delta(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>* p)
 		{
-			double z = moneyness(f, s, k, m);
+			double z = moneyness(f, s, k, p);
 
-			return -m.cdf(z, s);
+			return -p->cdf(z, s);
 		}
+
+	} // namespace put
+
+	namespace call {
 
 		// max{ F - k, 0 } - max{ k - F, 0 } = F - k
 		template<class F = double, class S = double, class K = double>
-		inline auto value_call(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>& m)
+		inline auto value(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>* p)
 		{
-			return value_put(f, s, k, m) + f - k;
+			return put::value(f, s, k, p) + f - k;
 		}
-		// (d/df) max{ k - F, 0 } + F - k
+		// (d/df) (max{ k - F, 0 } + F - k)
 		template<class F = double, class S = double, class K = double>
-		inline auto delta_call(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>& m)
+		inline auto delta(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>* p)
 		{
-			return delta_put(f, s, k, m) + 1;
+			return put::delta(f, s, k, p) + 1;
 		}
-	}
 
-	// Black-Scholes/Merton model
-	// S_t = s exp(rt + σB_t + σ^2t/2), B_t standard Brownian motion
-	// f = s exp(rt), s = σ sqrt(t)
-	namespace bsm {
-
-		template<class K, class T>
-		struct option {
-			K k; // strike
-			T t; // expiration in years
-		};
-		template<class K = double, class T = double>
-		struct put : public option<K, T> {
-			put(const K& k, const T& t)
-				: option{ -k,t }
-			{ }
-		};
-		template<class K = double, class T = double>
-		struct call : public option<K, T> {
-			call(const K& k, const T& t)
-				: option{ k,t }
-			{ }
-		};
-		/*
-		template<class S = double, class R = double, class Sigma = double, class T = double>
-		inline auto value(const S& s, const R& r, const Sigma& sigma, const T& t, const distribution::base<R, R>& m)
-		{
-		}
-		*/
-	}
+	} // namespace call
 
 } // namespace fms::black

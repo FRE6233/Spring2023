@@ -7,6 +7,13 @@
 
 namespace fms {
 
+	// Default test for convergence.
+	template<class X>
+	inline bool Eps(const X& x)
+	{
+		return fabs(x) <= sqrt(std::numeric_limits<double>::epsilon());
+	}
+
 	// Generalized hypergeometric function
 	// pFq(p0, ...; q0, ...; x) = sum_{n>=0} (p0)_n ... /(q0)_n ... x^n/n!
 	// (q)_n = q(q + 1)...(q + n - 1), (q)_0 = 1
@@ -46,35 +53,47 @@ namespace fms {
 
 		return s;
 	}
+
+	//
+	// Well known functions
+	//
 	template<class C = double, class X = double>
-	inline X _1F1(C p, C q, X x, const auto& eps)
+	inline X _1F1(C p, C q, X x, const auto& eps = Eps)
 	{
 		return pFq(1, &p, 1, &q, x, eps);
 	}
 	template<class C = double, class X = double>
-	inline X _2F1(C a, C b,/**/ C c, X x, const auto& eps)
+	inline X _2F1(C a, C b,/**/ C c, X x, const auto& eps = Eps)
 	{
 		C _p[2] = { a, b };
 		return pFq(2, _p, 1, &c, x, eps);
 	}
 
+	template<class X = double>
+	inline X exp(const X& x, const auto& eps = Eps)
+	{
+		return pFq(0, 0, 0, 0, x, eps);
+	}
 	// (lower) incomplete gamma function
 	// int_0^x t^{a - 1} e^{-t} dt 
 	template<class A, class X>
-	inline X incomplete_gamma(A a, const X& x, const auto& eps)
+	inline X incomplete_gamma(A a, const X& x, const auto& eps = Eps)
 	{
-		return (pow(x, a) * exp(x) / a) * _1F1(1, 1 + a, x, eps);
+		return (pow(x, a) * exp(x, eps) / a) * _1F1(1, 1 + a, x, eps);
 	}
 
-	// erf(x) = 2x/sqrt(pi) 1F1(1/2, 3/2, -x^2)
-	// normal_cdf(x) = (1 + erf(x/sqrt(2)))/2
-	// (1 + (2x/srt2)/sqrt(pi) 1F1(1/2, 3/2, -(x/srt2)^2))/2
-	// 0.5 + x/srt2pi 1F1(1/2, 3/2, -x^2/2)
+#define M_SQRTPI 1.7724538509055160272981674833411451827975494561223871282138077898
+	template<class X>
+	inline X erf(const X& x, const auto& eps = Eps)
+	{
+		return incomplete_gamma<double,X>(0.5, x * x, eps) / M_SQRTPI;
+	}
+
 #define M_SQRT2PI 2.5066282746310005024157652848110452530069867406099383166299235763
 	template<class X>
-	inline X normal(const X& x, const auto& eps)
+	inline X normal(const X& x, const auto& eps = Eps)
 	{
-		return 0.5 + _1F1(0.5, 1.5, -x * x / 2, eps) * x / M_SQRT2PI;
+		return 0.5 * (1 + erf(x / M_SQRT2, eps));
 	}
 
 #ifdef _DEBUG
@@ -118,7 +137,7 @@ namespace fms {
 			// erf(x) = 2x/sqrt(pi) 1F1(1/2, 3/2, -x^2)
 			X xs[] = { -2, -1, -0.5, 0, 0.5, 1, 2 };
 			for (X x : xs) {
-				X e = erf(x);
+				X e = std::erf(x);
 				X _e = M_2_SQRTPI * x * _1F1(0.5, 1.5, -x * x, Eps);
 				X de = e - _e;
 				assert(fabs(de) < eps);
@@ -127,7 +146,7 @@ namespace fms {
 		{
 			double emax = -1, emin = 1;
 			for (double x = -2; x <= 2; x += 0.1) {
-				double e = (1 + erf(x) / M_SQRT2) / 2;
+				double e = (1 + std::erf(x) / M_SQRT2) / 2;
 				double e_ = normal(x, Eps);
 				if (e_ - e > emax) {
 					emax = e_ - e;

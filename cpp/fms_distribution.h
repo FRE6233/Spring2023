@@ -7,13 +7,14 @@ namespace fms::distribution {
 	// Random variable with mean 0, variance 1.
 	template<class X = double, class S = X>
 	struct base {
+
 		// Probability density function.
 		X pdf(const X& x, const S& s = 0) const
 		{
 			return _pdf(x, s);
 		}
 
-		// Cumulative distrbution function P_s(X <= x) = E[e^{sX - cgf(s)}1(X <= x)]
+		// Cumulative distrbution function P_s(X <= x) = E[e^{sX - κ(s)}1(X <= x)]
 		X cdf(const X& x, const S& s = 0) const
 		{
 			return _cdf(x, s);
@@ -32,15 +33,12 @@ namespace fms::distribution {
 		{
 			return _cgf(s);
 		}
-		
-		// Inverse of cdf
-		// X inv(const X& x, const S& s = 0) const
+
 	private:
 		virtual X _pdf(const X&, const S&) const = 0; 
 		virtual X _cdf(const X&, const S&) const = 0;
 		virtual X _mgf(const S&) const = 0;
 		virtual X _cgf(const S&) const = 0;
-		// virtual X _inv(const X& x, const S& s = 0) const = 0
 	};
 
 } // namespace fms::distribution

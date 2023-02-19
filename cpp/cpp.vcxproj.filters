@@ -36,6 +36,12 @@
     <ClInclude Include="fms_black_normal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="fms_bsm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fms_distribution_double_exponential.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fms.t.cpp">
