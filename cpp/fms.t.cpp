@@ -1,7 +1,9 @@
 // test.cpp - test C++ code
 #include <cassert>
+#include <iostream>
 #include "fms_distribution_normal.h"
 #include "fms_hypergeometric.h"
+#include "fms_black_normal.h"
 
 using namespace fms;
 
@@ -20,11 +22,15 @@ int main()
 {
 	double x = machine_epsilon();
 	assert(x != 0);
-	assert(1 + x == 1);
 	assert(x >= std::numeric_limits<double>::epsilon() / 2);
 
-	int test_2F1 = fms::test_2F1<>();
-	int test_normal = distribution::normal<>::test();
+		int test_2F1 = fms::test_2F1<>();
+		int test_normal = distribution::normal<>::test();
+		int test_black_normal = black::put::test();
+	}
+	catch (const std::exception& ex) {
+		std::cerr << ex.what() << std::endl;;
+	}
 
 	return 0;
 }

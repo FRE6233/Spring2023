@@ -2,7 +2,7 @@
 #pragma once
 #include <cmath>
 #include <stdexcept>
-#include "fms_distribution.h"
+#include "fms_distribution_normal.h"
 
 namespace fms {
 	namespace black {
@@ -41,6 +41,12 @@ namespace fms {
 		inline auto value_call(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>& m)
 		{
 			return value_put(f, s, k, m) + f - k;
+		}
+		// (d/df) max{ k - F, 0 } + F - k
+		template<class F = double, class S = double, class K = double>
+		inline auto delta_call(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>& m)
+		{
+			return delta_put(f, s, k, m) + 1;
 		}
 	}
 

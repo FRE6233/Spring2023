@@ -9,6 +9,14 @@ namespace fms::distribution {
 
 	template<class X = double, class S = X>
 	struct normal : public base<X, S> {
+		
+		X _pdf(const X& z, const S& s) const override
+		{
+			static const X sqrt2pi = sqrt(2 * M_PI);
+			X z_ = z - s;
+
+			return exp(-z_ * z_ / 2) / sqrt2pi;
+		}
 		// P_s(Z <= z) = P(Z <= z - s)
 		X _cdf(const X& z, const S& s) const override
 		{
@@ -29,6 +37,10 @@ namespace fms::distribution {
 		static int test()
 		{
 			normal<> N;
+			{
+				ensure(1 / sqrt(2 * M_PI) == N.pdf(0));
+			}
+
 			{
 				ensure(0.5 == N.cdf(0));
 				ensure(1 == N.cdf(1) + N.cdf(-1));

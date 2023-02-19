@@ -5,41 +5,27 @@
 using namespace fms;
 using namespace xll;
 
-static distribution::normal<> normal;
-
-AddIn xai_distribution_normal(
-	Function(XLL_HANDLEX, "xll_distribution_normal", "DISTRIBUTION.NORMAL")
-	.Arguments({ })
-	.Uncalced()
-	.FunctionHelp("Return a handle to a standard normal cumulative distribution.")
-	.Category(CATEGORY)
-);
-HANDLEX WINAPI xll_distribution_normal(double z, double s)
-{
-#pragma XLLEXPORT
-	return safe_handle<distribution::base<>>(&normal);
-}
-
-AddIn xai_distribution_cdf(
-	Function(XLL_DOUBLE, "xll_distribution_cdf", "DISTRIBUTION.CDF")
+AddIn xai_distribution_pdf(
+	Function(XLL_DOUBLE, "xll_distribution_pdf", "DISTRIBUTION.PDF")
 	.Arguments({ 
-		Arg(XLL_HANDLEX, "m", "is a handle to a distribution."),
-		Arg(XLL_DOUBLE, "z", "is the value at which to calculate the cdf."),
-		Arg(XLL_DOUBLE, "s", "is the share measure parameter. Default is 0."),
+		Arg(XLL_HANDLEX, "h", "is a handle to a distribution."),
+		Arg(XLL_DOUBLE, "x", "is the value at which to calculate the pdf"),
+		Arg(XLL_DOUBLE, "s", "is the optional share measure parameter. Default is 0."),
 		})
-	.FunctionHelp("Return the standard normal cumulative distribution.")
+	.FunctionHelp("Return the standard probability density function.")
 	.Category(CATEGORY)
 );
-double WINAPI xll_distribution_cdf(HANDLEX m, double z, double s)
+
+double WINAPI xll_distribution_pdf(HANDLEX h, double x, double s)
 {
 #pragma XLLEXPORT
 	double result = std::numeric_limits<double>::quiet_NaN();
 
 	try {
-		distribution::base<>* pm = safe_pointer<distribution::base<>>(m);
-		ensure(pm);
+		distribution::base<>* ph = safe_pointer<distribution::base<>>(h);
+		ensure(ph);
 
-		result = pm->cdf(z, s);
+		result = ph->pdf(x, s);
 	}
 	catch (const std::exception& ex) {
 		XLL_ERROR(ex.what());
