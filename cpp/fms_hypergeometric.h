@@ -75,7 +75,6 @@ namespace fms {
 		return (pow(x, a) * exp(x, eps) / a) * _1F1(1, 1 + a, x, eps);
 	}
 
-
 #ifdef _DEBUG
 	template<class X = double>
 	inline int test_hypergeometric()
