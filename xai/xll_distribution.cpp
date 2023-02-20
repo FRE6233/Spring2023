@@ -22,7 +22,7 @@ double WINAPI xll_distribution_pdf(HANDLEX h, double x, double s)
 	double result = NaN;
 
 	try {
-		const distribution::base<>* ph = safe_pointer<distribution::base<>>(h);
+		const distribution::standard<>* ph = safe_pointer<distribution::standard<>>(h);
 		ensure(ph);
 
 		result = ph->pdf(x, s);
@@ -51,7 +51,7 @@ double WINAPI xll_distribution_cdf(HANDLEX h, double x, double s)
 	double result = NaN;
 
 	try {
-		const distribution::base<>* ph = safe_pointer<distribution::base<>>(h);
+		const distribution::standard<>* ph = safe_pointer<distribution::standard<>>(h);
 		ensure(ph);
 
 		result = ph->cdf(x, s);
@@ -78,7 +78,7 @@ double WINAPI xll_distribution_mgf(HANDLEX h, double s)
 	double result = NaN;
 
 	try {
-		const distribution::base<>* ph = safe_pointer<distribution::base<>>(h);
+		const distribution::standard<>* ph = safe_pointer<distribution::standard<>>(h);
 		ensure(ph);
 
 		result = ph->mgf(s);
@@ -105,7 +105,7 @@ double WINAPI xll_distribution_cgf(HANDLEX h, double s)
 	double result = NaN;
 
 	try {
-		const distribution::base<>* ph = safe_pointer<distribution::base<>>(h);
+		const distribution::standard<>* ph = safe_pointer<distribution::standard<>>(h);
 		ensure(ph);
 
 		result = ph->cgf(s);

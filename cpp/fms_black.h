@@ -10,7 +10,7 @@ namespace fms::black {
 
 	// F = f exp(sZ - κ(s) <= k  if and only if  Z <= z(k; f, s) = (log(k/f) + κ(s))/s
 	template<class F = double, class S = double, class K = double>
-	inline auto moneyness(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>* p)
+	inline auto moneyness(const F& f, const S& s, const K& k, const fms::distribution::standard<F, S>* p)
 	{
 		if (f <= 0 or s <= 0 or k <= 0) {
 			throw std::runtime_error(__FUNCTION__ ": arguments must be positive");
@@ -23,7 +23,7 @@ namespace fms::black {
 
 		// E[max{k - F, 0}] = k P(F <= k) - f P_s(F <= k)
 		template<class F = double, class S = double, class K = double>
-		inline auto value(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>* p)
+		inline auto value(const F& f, const S& s, const K& k, const fms::distribution::standard<F, S>* p)
 		{
 			double z = moneyness(f, s, k, p);
 
@@ -32,7 +32,7 @@ namespace fms::black {
 
 		// (d/df)E[max{k - F, 0}] = E[-exp(sX - κ(s)1(F <= k)] = -P_s(F <= k)
 		template<class F = double, class S = double, class K = double>
-		inline auto delta(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>* p)
+		inline auto delta(const F& f, const S& s, const K& k, const fms::distribution::standard<F, S>* p)
 		{
 			double z = moneyness(f, s, k, p);
 
@@ -45,13 +45,13 @@ namespace fms::black {
 
 		// max{ F - k, 0 } - max{ k - F, 0 } = F - k
 		template<class F = double, class S = double, class K = double>
-		inline auto value(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>* p)
+		inline auto value(const F& f, const S& s, const K& k, const fms::distribution::standard<F, S>* p)
 		{
 			return put::value(f, s, k, p) + f - k;
 		}
 		// (d/df) (max{ k - F, 0 } + F - k)
 		template<class F = double, class S = double, class K = double>
-		inline auto delta(const F& f, const S& s, const K& k, const fms::distribution::base<F, S>* p)
+		inline auto delta(const F& f, const S& s, const K& k, const fms::distribution::standard<F, S>* p)
 		{
 			return put::delta(f, s, k, p) + 1;
 		}

@@ -17,7 +17,7 @@ namespace fms::bsm {
 	struct stock {
 		S spot;
 		V sigma;
-		const fms::distribution::base<S, V>* model;
+		const fms::distribution::standard<S, V>* model;
 	};
 
 	template<class K, class T>

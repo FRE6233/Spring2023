@@ -9,7 +9,7 @@
 namespace fms::distribution {
 
 	template<class X = double, class S = X>
-	struct double_exponential : public base<X, S> {
+	struct double_exponential : public standard<X, S> {
 		static constexpr X beta = M_SQRT2;
 
 		// e^{sz - κ(s)} f(z)

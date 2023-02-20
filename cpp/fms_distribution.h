@@ -6,15 +6,15 @@ namespace fms::distribution {
 
 	// Random variable with mean 0, variance 1.
 	template<class X = double, class S = X>
-	struct base {
+	struct standard {
 
-		// Probability density function.
+		// Probability share density function f_s(x) = e^{sX - κ(s)} f(x)
 		X pdf(const X& x, const S& s = 0) const
 		{
 			return _pdf(x, s);
 		}
 
-		// Cumulative distrbution function P_s(X <= x) = E[e^{sX - κ(s)}1(X <= x)]
+		// Cumulative share distrbution function P_s(X <= x) = E[e^{sX - κ(s)}1(X <= x)]
 		X cdf(const X& x, const S& s = 0) const
 		{
 			return _cdf(x, s);

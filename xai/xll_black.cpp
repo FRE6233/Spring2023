@@ -7,11 +7,11 @@
 using namespace fms;
 using namespace xll;
 
-inline const distribution::base<>* distribution_pointer(HANDLEX h)
+inline const distribution::standard<>* distribution_pointer(HANDLEX h)
 {
 	static distribution::normal<> N;
 
-	const distribution::base<>* p = safe_pointer<distribution::base<>>(h);
+	const distribution::standard<>* p = safe_pointer<distribution::standard<>>(h);
 
 	return p ? p : &N;
 }
@@ -33,7 +33,7 @@ double WINAPI xll_black_put_value(double f, double s, double k, HANDLEX h)
 	double result = NaN;
 
 	try {
-		const fms::distribution::base<>* p = distribution_pointer(h);
+		const fms::distribution::standard<>* p = distribution_pointer(h);
 		ensure(p);
 
 		result = black::put::value(f, s, k, p);
@@ -53,7 +53,7 @@ AddIn xai_black_put_delta(
 		Arg(XLL_DOUBLE, "k", "is the strike."),
 		Arg(XLL_HANDLEX, "h", "is a handle to a distribution. Default is normal."),
 		})
-		.FunctionHelp("Return the Fischer Black delta of a put.")
+	.FunctionHelp("Return the Fischer Black delta of a put.")
 	.Category(CATEGORY)
 );
 double WINAPI xll_black_put_delta(double f, double s, double k, HANDLEX h)
@@ -62,7 +62,7 @@ double WINAPI xll_black_put_delta(double f, double s, double k, HANDLEX h)
 	double result = NaN;
 
 	try {
-		const fms::distribution::base<>* p = distribution_pointer(h);
+		const fms::distribution::standard<>* p = distribution_pointer(h);
 		ensure(p);
 
 		result = black::put::delta(f, s, k, p);
@@ -81,7 +81,7 @@ AddIn xai_black_put_implied(
 		Arg(XLL_DOUBLE, "p", "is the put price."),
 		Arg(XLL_DOUBLE, "k", "is the strike."),
 		})
-		.FunctionHelp("Return the implied volatility of a put.")
+	.FunctionHelp("Return the implied Black volatility of a put.")
 	.Category(CATEGORY)
 );
 double WINAPI xll_black_put_implied(double f, double p, double k)

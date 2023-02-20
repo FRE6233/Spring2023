@@ -8,7 +8,7 @@
 namespace fms::distribution {
 
 	template<class X = double, class S = X>
-	struct normal : public base<X, S> {
+	struct normal : public standard<X, S> {
 		
 		// exp(s z - s^2/2) exp(-z^2/2) / sqrt(2pi)
 		X _pdf(const X& z, const S& s) const override

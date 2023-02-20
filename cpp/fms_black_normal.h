@@ -17,7 +17,7 @@ namespace fms::black::normal {
 	// using E[e^N g(M)] = E[e^N] E[g(M + Cov(N, M))], N, M jointly normal
 	inline double N(double z, double s = 0)
 	{
-		return 0.5 * (1 + std::erf((z - s) / M_SQRT2));
+		return 0.5 * (1 + erf((z - s) / M_SQRT2));
 	}
 
 	// F = f exp(sZ - s^2/2) <= k iff Z <= log(k/f)/2 + s/2
@@ -28,7 +28,7 @@ namespace fms::black::normal {
 			return NaN;
 		}
 
-		return std::log(k / f)/s + s/2;
+		return log(k / f)/s + s/2;
 	}
 
 	namespace put {

@@ -17,5 +17,5 @@ AddIn xai_distribution_normal(
 double WINAPI xll_distribution_normal()
 {
 #pragma XLLEXPORT
-	return safe_handle<distribution::base<>>(&normal);
+	return safe_handle<distribution::standard<>>(&normal);
 }
