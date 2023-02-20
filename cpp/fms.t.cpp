@@ -28,7 +28,7 @@ int main()
 	assert(1 + x == 1);
 	assert(x >= std::numeric_limits<double>::epsilon() / 2);
 	try {
-		fms::test_2F1<>();
+		fms::test_hypergeometric<>();
 		distribution::normal<>::test();
 		black::normal::put::test();
 		bsm::test_Dfs();
