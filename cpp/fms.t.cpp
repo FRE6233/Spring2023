@@ -30,6 +30,7 @@ int main()
 	try {
 		fms::test_hypergeometric<>();
 		distribution::normal<>::test();
+		distribution::double_exponential<>::test();
 		black::normal::put::test();
 		bsm::test_Dfs();
 	}

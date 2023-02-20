@@ -23,7 +23,7 @@ namespace fms::distribution {
 		{
 			return 0*z*s; //!!! implement
 		}
-		// E[e^{sX}] = β^2/(β + s)(β − s), s < β.
+		// E[e^{sX}] = β^2/(β^2 - s^2), s < β.
 		X _mgf(const S& s) const override
 		{
 			return 0*s; //!!! implement
@@ -36,6 +36,10 @@ namespace fms::distribution {
 		static int test()
 		{
 			double_exponential<> DE;
+
+			double z = 0;
+			double ss[] = { -0.5, 0, 0.5 };
+			// !!! test pdf, cdf, mgf, and cgf at z = 0, s = -0.5, 0, 0.5
 
 			return 0;
 		}

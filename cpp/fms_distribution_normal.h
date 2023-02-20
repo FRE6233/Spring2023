@@ -30,7 +30,7 @@ namespace fms::distribution {
 		// exp(s^2/2)
 		X _mgf(const S& s) const override
 		{
-			return exp(s*s/2);
+			return exp(_cgf(s));
 		}
 
 		// s^2/2

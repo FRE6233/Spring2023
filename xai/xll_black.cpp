@@ -1,4 +1,4 @@
-// xll_black.cpp - Fischer Black model
+// xll_black.cpp - General Fischer Black model
 #include "../cpp/fms_distribution_normal.h"
 #include "../cpp/fms_black_normal.h"
 #include "../cpp/fms_black.h"
@@ -11,9 +11,7 @@ inline const distribution::standard<>* distribution_pointer(HANDLEX h)
 {
 	static distribution::normal<> N;
 
-	const distribution::standard<>* p = safe_pointer<distribution::standard<>>(h);
-
-	return p ? p : &N;
+	return h == 0 ? &N : safe_pointer<distribution::standard<>>(h);
 }
 
 AddIn xai_black_put_value(
@@ -74,6 +72,8 @@ double WINAPI xll_black_put_delta(double f, double s, double k, HANDLEX h)
 	return result;
 }
 
+// Note this uses the normal distribution.
+// Black implied volatility is a proxy for price.
 AddIn xai_black_put_implied(
 	Function(XLL_DOUBLE, "xll_black_put_implied", "BLACK.PUT.IMPLIED")
 	.Arguments({

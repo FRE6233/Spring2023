@@ -1,4 +1,4 @@
-﻿// fms_black.h - Fischer Black model.
+﻿// fms_black.h - Generalized Fischer Black model.
 // F = f exp(sX - κ(s)), κ(s) = log E[exp(sX)], E[X] = 0, Var(X) = 1.
 // E[F] = f, Var(log(F)) = s^2.
 #pragma once
