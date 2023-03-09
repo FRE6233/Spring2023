@@ -17,6 +17,7 @@ namespace fms::distribution {
 		{
 			return exp(s * z - _cgf(s)) * exp(-β * fabs(z)) / β;
 		}
+
 		// (1 − s/β)e^{(s + β)x}/2, x <= 0
 		// 1 − (1 + s/β)e^{(s − β)x}/2, x >= 0
 		X _cdf(const X& z, const S& s) const override
