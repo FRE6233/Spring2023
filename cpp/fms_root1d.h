@@ -14,9 +14,10 @@ namespace fms::root {
 		F f;
 		X x0, x1;
 		X y0, y1;
+		X eps;
 	public:
 		secant(F _f, X _x0, X _x1, X eps = 0)
-			: f{ _f }, x0{ _x0 }, x1{ x_1 }, eps{ eps }
+			: f{ _f }, x0{ _x0 }, x1{ _x1 }, eps{ eps }
 		{
 			if (x0 > x1) {
 				std::swap(x0, x1);
@@ -27,7 +28,7 @@ namespace fms::root {
 			ensure(signbit(y0) != signbit(y1));
 		}
 		explicit operator bool() const
-		{		
+		{
 			return std::max(fabs(y0), fabs(y1)) >= eps;
 		}
 		X operator*() const
@@ -59,6 +60,6 @@ namespace fms::root {
 
 			return operator*();
 		}
-	}
+	};
 
 } // namespace fms::root

@@ -7,6 +7,9 @@
 #include "fms_black_normal.h"
 #include "fms_black.h"
 #include "fms_bsm.h"
+#include "fms_pwflat.h"
+#include "fms_fixed_income.h"
+#include "fms_bootstrap.h"
 
 using namespace fms;
 
