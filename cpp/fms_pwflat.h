@@ -1,21 +1,23 @@
 // fms_pwflat.h - piecewise flat curve
 /*
-		   { f[i] if t[i-1] < t <= t[i];
+	       { f[i] if t[i-1] < t <= t[i];
 	f(t) = { _f   if t > t[n-1];
-		   { NaN  if t < 0
+	       { NaN  if t < 0
 	F                                   _f
 	|        f[1]             f[n-1] o--------
 	| f[0] o------          o--------x
 	x------x      ... ------x
 	|
-	0-----t[0]--- ... ---t[n-2]---t[n-1] T
+	0-----t[0]--- ... ---t[n-2]---t[n-1]--- T
 */
 #pragma once
 #include <cmath>
 #include <algorithm>
 #include <limits>
 #include <numeric>
+#include <iterator>
 #include <vector>
+#include "ensure.h"
 
 namespace fms {
 	namespace pwflat {
@@ -25,11 +27,11 @@ namespace fms {
 
 		// strictly increasing values
 		template<class I>
-		inline bool monotonic(I b, I e)
+		inline bool monotonic(const I b, const I e)
 		{
 			using T = std::iterator_traits<I>::value_type;
 
-			return e == std::adjacent_find(b, e, [](const T& t0, const T& t1) { return t0 >= t1; });
+			return e == std::adjacent_find(b, e, std::greater_equal<T>{});
 		}
 		template<class T>
 		inline bool monotonic(size_t n, const T* t)
@@ -85,6 +87,7 @@ namespace fms {
 		}
 
 		// spot r(u) = (int_0^u f(t) dt)/u
+		// r(u) = f(u) if u <= t[0]
 		template<class T, class F>
 		inline F spot(T u, size_t n, const T* t, const F* f, F _f = NaN<F>)
 		{
@@ -99,14 +102,18 @@ namespace fms {
 			F _f;
 		public:
 			curve()
-				: _f(std::numeric_limits<F>::quiet_NaN())
+				: _f(NaN<F>)
 			{ }
-			curve(size_t n, const T* t_, const F* f_, F _f = std::numeric_limits<F>::quiet_NaN())
+			curve(size_t n, const T* t_, const F* f_, F _f = NaN<F>)
 				: t(t_, t_ + n), f(f_, f_ + n), _f(_f)
-			{ }
-			curve(const std::vector<T>& t, const std::vector<F>& f, F _f = std::numeric_limits<F>::quiet_NaN())
+			{
+				ensure(ok());
+			}
+			curve(const std::vector<T>& t, const std::vector<F>& f, F _f = NaN<F>)
 				: t(t), f(f), _f(_f)
-			{ }
+			{
+				ensure(ok());
+			}
 			curve(const curve&) = default;
 			curve& operator=(const curve&) = default;
 			curve(curve&&) = default;
@@ -139,17 +146,19 @@ namespace fms {
 			// add point
 			curve& extend(T t_, F f_)
 			{
-				/// ensure(size() == 0 || t_ > t.back());
+				ensure(size() == 0 || t_ > t.back());
 
 				t.push_back(t_);
 				f.push_back(f_);
 
 				return *this;
 			}
+			// Get extrapolated value.
 			F extrapolate() const
 			{
 				return _f;
 			}
+			// Set extrapolated value.
 			curve& extrapolate(F f_)
 			{
 				_f = f_;
