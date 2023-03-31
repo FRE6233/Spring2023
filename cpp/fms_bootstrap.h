@@ -3,7 +3,7 @@
 #include "ensure.h"
 #include "fms_fixed_income.h"
 #include "fms_pwflat.h"
-#include "fms_root1d.h"
+#include "fms_secant.h"
 
 namespace fms::bootstrap {
 
@@ -56,11 +56,6 @@ namespace fms::bootstrap {
 			return { u_, log(-c[0] / c[1]) / (u[0] - u[1]) };
 		}
 
-		/*
-		size_t m_ = std::lower_bound(u, u + m, t_) - u;
-		double pv_ = present_value(m_, u, c, n, t, f);
-		*/
-
 		auto pv = [m, u, c, n, t, f, p](double _f) {
 			return -p + present_value(m, u, c, n, t, f, _f);
 		};
@@ -70,10 +65,7 @@ namespace fms::bootstrap {
 			_f = (n == 0) ? 0.01 : f[n - 1];
 		}
 
-		auto sec = root::secant(pv, _f, _f + 0.001);
-
-
-		return { u_, sec.solve() };
+		return { u_, secant::solve(pv, _f, _f + 0.001) };
 	}
 
 	template<class U = double, class C = double, class T = double, class F = double>

@@ -143,6 +143,7 @@
     <ClInclude Include="fms_hypergeometric.h" />
     <ClInclude Include="fms_pwflat.h" />
     <ClInclude Include="fms_root1d.h" />
+    <ClInclude Include="fms_secant.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fms.t.cpp" />

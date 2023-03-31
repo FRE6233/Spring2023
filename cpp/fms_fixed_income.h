@@ -91,8 +91,7 @@ namespace fms::fixed_income {
 		std::vector<U> u;
 		std::vector<C> c;
 	public:
-		instrument_value(size_t n = 0)
-			: u(n), c(n)
+		instrument_value()
 		{ }
 		instrument_value(size_t n, const U* u, const C* c)
 			: u(u, u + n), c(c, c + n)
