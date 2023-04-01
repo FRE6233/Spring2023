@@ -48,7 +48,7 @@ AddIn xai_pwflat_value(
 		Arg(XLL_FPX, "time", "is an array of times."),
 		})
 	.Category(CATEGORY)
-	.FunctionHelp("Return a handle to a piece-wise flat curve.")
+	.FunctionHelp("Return values of flat curve at given times.")
 );
 _FPX* WINAPI xll_pwflat_value(HANDLEX curve, _FPX* pt)
 {
