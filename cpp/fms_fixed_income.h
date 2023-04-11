@@ -128,17 +128,31 @@ namespace fms::fixed_income {
 
 		instrument<U, C>& extend(U u_, C c_)
 		{
-			if (u.size() == 0 || u_ > u.back()) {
-				u.push_back(u_);
-				c.push_back(c_);
-			}
-			else {
-				//???ensure(u_ == u.back());
-				c.back() += c_;
-			}
+			ensure(u_ > u.back());
+
+			u.push_back(u_);
+			c.push_back(c_);
 
 			return *this;
 		}
+	};
+
+	template<class U = double, class C = double>
+	class forward_rate_agreement : public instrument_value<U, C>
+	{
+	public:
+		forward_rate_agreement(U effective, U termination, C rate)
+			: instrument_value<U,C>({ effective, termination }, { -1, exp(rate * (termination - effective)) })
+		{ }
+	};
+
+	template<class U = double, class C = double>
+	class cash_deposit : public forward_rate_agreement<U, C>
+	{
+	public:
+		cash_deposit(U maturity, C rate)
+			: forward_rate_agreement<U,C>(0, maturity, rate)
+		{ }
 	};
 
 	// Collection of weighted instruments with cash flows sorted by time

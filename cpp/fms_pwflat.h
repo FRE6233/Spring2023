@@ -138,6 +138,10 @@ namespace fms {
 			{
 				return f.data();
 			}
+			const F* rate() const
+			{
+				return f.data();
+			}
 			std::pair<T, F> back() const
 			{
 				return { t.back(), f.back() };

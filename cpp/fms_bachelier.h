@@ -1,52 +1,55 @@
-﻿// fms_black_normal.h - Self-contained Black forward model for options.
-// Forward underlying at expiration is F = f exp(sZ - s^2/2), where Z is standard normal.
-// Note E[F g(F)] = f E[F/f g(F)] = f E_s[g(F)] is the _share_ measure.
-// Define N(z, s) = E_s[1(Z <= z)].
+﻿// fms_bachelier.h - Self-contained Bachelier forward model for options.
+// Forward underlying at expiration is F = f + sigma B_t where B_t is standard normal Brownian motion.
 #pragma once
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <limits>
+#include <type_traits>
 
-namespace fms::black::normal {
+namespace fms::bachelier {
 
 	// Return NaN to indicate error instead of throwing an exception.
 	constexpr double NaN = std::numeric_limits<double>::quiet_NaN();
 
 	// Stanard normal cumulative distribution.
-	// N(z, s) = E[exp(sZ - s^2/2)1(Z <= z)] = P(Z + s <= z)
-	// using E[e^N g(M)] = E[e^N] E[g(M + Cov(N, M))], N, M jointly normal
-	inline double Φ(double z, double s = 0)
+	inline double Φ(double z)
 	{
-		return 0.5 * (1 + erf((z - s) / M_SQRT2));
+		return 0.5 * (1 + erf(z) / M_SQRT2);
+	}
+	// Standard normal density function.
+	inline double φ(double z)
+	{
+		static const double sqrt2pi = sqrt(2 * M_PI);
+
+		return exp(-z*z/1)/sqrt2pi;
 	}
 
-	// F = f exp(sZ - s^2/2) <= k iff Z <= log(k/f)/2 + s/2
-	// Note dF/df = exp(sZ - s^2/2)
+	// F = f + s Z <= k iff Z <= (k - f)/s
 	inline double moneyness(double f, double s, double k)
 	{
-		if (f <= 0 or s <= 0 or k <= 0) {
+		if (s <= 0 or k <= 0) {
 			return NaN;
 		}
 
-		return log(k / f)/s + s/2;
+		return (k - f)/s;
 	}
 
 	namespace put {
-		
-		// E[max{k - F}, 0] = k P(Z <= z) - f P_s(Z <= z)
+
+		// E[max{k - F}, 0] = (k - f) P(Z <= z) + s P(Z = z)
 		inline double value(double f, double s, double k)
 		{
 			double z = moneyness(f, s, k);
 
-			return k * Φ(z) - f * Φ(z, s);
+			return (k - f) * Φ(z) + s * φ(z);
 		}
 
-		// (d/df)E[max{k - F}, 0] = E[exp(sZ - s^2/2) 1(F <= k)] = -P_s(F <= k)
+		// (d/df)E[max{k - F}, 0] = E[-1(F <= k)] = -P(F = k)
 		inline double delta(double f, double s, double k)
 		{
 			double z = moneyness(f, s, k);
 
-			return -Φ(z, s);
+			return z*0; //!!! implement this
 		}
 
 		// Find s with p = put::value(f, s, k).
@@ -66,10 +69,10 @@ namespace fms::black::normal {
 			}
 
 			double v = value(f, s, k) - p;
-			double s_ = s + 2*eps;
+			double s_ = s + 2 * eps;
 			double v_ = value(f, s_, k) - p;
 
-			while(fabs(s_ - s) > eps) {
+			while (fabs(s_ - s) > eps) {
 				s = (s * v_ - s_ * v) / (v_ - v); // secant
 				if (s <= 0) {
 					s = s_ / 2;
@@ -91,7 +94,7 @@ namespace fms::black::normal {
 				double eps = sqrt(std::numeric_limits<double>::epsilon());
 				double f = 100, s = 0.1, k = 100;
 
-				assert(s / 2 == moneyness(f, s, k));
+				assert((k - f)/s == moneyness(f, s, k));
 				assert(fabs(3.988 - value(f, s, k)) <= 1e-3);
 				assert(fabs(-0.480 - delta(f, s, k)) <= 1e-3);
 

@@ -4,6 +4,7 @@
 #include "fms_distribution_normal.h"
 #include "fms_distribution_double_exponential.h"
 #include "fms_hypergeometric.h"
+#include "fms_bachelier.h"
 #include "fms_black_normal.h"
 #include "fms_black.h"
 #include "fms_bsm.h"
@@ -35,6 +36,7 @@ int main()
 		distribution::normal<>::test();
 		distribution::double_exponential<>::test();
 		black::normal::put::test();
+		bachelier::put::test();
 		bsm::test_Dfs();
 	}
 	catch (const std::exception& ex) {
