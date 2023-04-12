@@ -16,8 +16,7 @@ namespace fms::secant {
 
 		while (iter && fabs(y0) > tol) {
 			double y1 = f(x1);
-			double m = (y1 - y0) / (x1 - x0);
-			x0 = x1 - y1 / m;
+			x0 = (x0 * y1 - x1 * y0) / (y1 - y0);
 			std::swap(x0, x1);
 			std::swap(y0, y1);
 			--iter;

@@ -44,7 +44,7 @@ namespace fms::bachelier {
 			return (k - f) * Φ(z) + s * φ(z);
 		}
 
-		// (d/df)E[max{k - F}, 0] = E[-1(F <= k)] = -P(F = k)
+		// (d/df)E[max{k - F}, 0] = E[-1(F <= k)dF/df]
 		inline double delta(double f, double s, double k)
 		{
 			double z = moneyness(f, s, k);
