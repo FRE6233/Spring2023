@@ -82,6 +82,56 @@ double WINAPI xll_bachelier_put_implied(double f, double p, double k)
 	return result;
 }
 
+AddIn xai_bachelier_call_value(
+	Function(XLL_DOUBLE, "xll_bachelier_call_value", "BACHELIER.CALL.VALUE")
+	.Arguments({
+		Arg(XLL_DOUBLE, "f", "is the forward value."),
+		Arg(XLL_DOUBLE, "s", "is the vol."),
+		Arg(XLL_DOUBLE, "k", "is the strike."),
+		})
+		.FunctionHelp("Return the Bachelier value of a call.")
+	.Category(CATEGORY)
+);
+double WINAPI xll_bachelier_call_value(double f, double s, double k)
+{
+#pragma XLLEXPORT
+	double result = NaN;
+
+	try {
+		result = bachelier::call::value(f, s, k);
+	}
+	catch (const std::exception& ex) {
+		XLL_ERROR(ex.what());
+	}
+
+	return result;
+}
+
+AddIn xai_bachelier_call_delta(
+	Function(XLL_DOUBLE, "xll_bachelier_call_delta", "BACHELIER.CALL.DELTA")
+	.Arguments({
+		Arg(XLL_DOUBLE, "f", "is the forward value."),
+		Arg(XLL_DOUBLE, "s", "is the vol."),
+		Arg(XLL_DOUBLE, "k", "is the strike."),
+		})
+		.FunctionHelp("Return the Bachelier delta of a call.")
+	.Category(CATEGORY)
+);
+double WINAPI xll_bachelier_call_delta(double f, double s, double k)
+{
+#pragma XLLEXPORT
+	double result = NaN;
+
+	try {
+		result = bachelier::call::delta(f, s, k);
+	}
+	catch (const std::exception& ex) {
+		XLL_ERROR(ex.what());
+	}
+
+	return result;
+}
+
 AddIn xai_bachelier_call_implied(
 	Function(XLL_DOUBLE, "xll_bachelier_call_implied", "BACHELIER.CALL.IMPLIED")
 	.Arguments({

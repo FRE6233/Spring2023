@@ -141,6 +141,7 @@
     <ClInclude Include="fms_distribution_double_exponential.h" />
     <ClInclude Include="fms_distribution_normal.h" />
     <ClInclude Include="fms_fixed_income.h" />
+    <ClInclude Include="fms_holee.h" />
     <ClInclude Include="fms_hypergeometric.h" />
     <ClInclude Include="fms_pwflat.h" />
     <ClInclude Include="fms_root1d.h" />
