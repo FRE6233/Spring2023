@@ -2,6 +2,7 @@
 // D_t(u) = E_t[D_u/D_t] = exp(-r (u - t) + σ^2 (u - t)^3/6 + σ (u - t) B_t)
 #pragma once
 #include <cmath>
+#include "../cpp/fms_bachelier.h"
 
 namespace fms {
 
@@ -54,7 +55,11 @@ namespace fms {
 	template<class R, class S, class T>
 	inline auto floorlet(const holee<R, S, T>& m, R k, T t)
 	{
-		return 0; // !!! implement
+		R k_ = k + m.convexity(t);
+		R f = m.r;
+		R s = m.σ * sqrt(t);
+
+		return bachelier::put::value(f, s, k) * m.ED(0, t);
 	}
 
 } // namespace fms
