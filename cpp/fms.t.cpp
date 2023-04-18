@@ -44,16 +44,18 @@ int test_carr_madan()
 	}
 
 	{
-		// payoff -2 log(k/f);
+		// variance swap payoff -2 log(k/f);
 		std::vector<double> fs(n);
 		for (size_t i = 0; i < n; ++i) {
 			fs[i] = -2 * log(ks[i] / f);
 		}
 
 		std::span<double> f_(fs);
-		auto s2 = carr_madan::value(f, f, std::span(p), std::span(c), std::span(ks), f_);
-		double z = sqrt(s2) - s;
-		ensure(fabs(z) < 1e-4);
+		for (double a : {-20., -10., 0., 10., 20.}) {
+			auto s2 = carr_madan::value(f, a, std::span(p), std::span(c), std::span(ks), f_);
+			double z = sqrt(s2) - s;
+			ensure(fabs(z) < 1e-4);
+		}
 	}
 
 	return 0;
@@ -75,7 +77,7 @@ int main()
 		bsm::test_Dfs();
 		carr_madan::test_index();
 		carr_madan::test_tangent();
-		carr_madan::test_fit();
+		carr_madan::test_fit<double>();
 	}
 	catch (const std::exception& ex) {
 		std::cerr << ex.what() << std::endl;;
