@@ -153,6 +153,7 @@
     <ClCompile Include="xll_array_sequence.cpp" />
     <ClCompile Include="xll_bachelier.cpp" />
     <ClCompile Include="xll_bootstrap.cpp" />
+    <ClCompile Include="xll_carr_madan.cpp" />
     <ClCompile Include="xll_distribution.cpp" />
     <ClCompile Include="xll_black.cpp" />
     <ClCompile Include="xll_distribution_double_exponential.cpp" />

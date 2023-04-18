@@ -91,13 +91,13 @@ namespace fms::black::normal {
 				double eps = sqrt(std::numeric_limits<double>::epsilon());
 				double f = 100, s = 0.1, k = 100;
 
-				assert(s / 2 == moneyness(f, s, k));
-				assert(fabs(3.988 - value(f, s, k)) <= 1e-3);
-				assert(fabs(-0.480 - delta(f, s, k)) <= 1e-3);
+				ensure(s / 2 == moneyness(f, s, k));
+				ensure(fabs(3.988 - value(f, s, k)) <= 1e-3);
+				ensure(fabs(-0.480 - delta(f, s, k)) <= 1e-3);
 
 				double p = value(f, s, k);
 				double s_ = implied(f, p, k, 0.2, eps);
-				assert(fabs(s_ - s) <= eps);
+				ensure(fabs(s_ - s) <= eps);
 			}
 
 			return 0;
@@ -132,13 +132,13 @@ namespace fms::black::normal {
 				double eps = sqrt(std::numeric_limits<double>::epsilon());
 				double f = 100, s = 0.1, k = 100;
 
-				assert(s / 2 == moneyness(f, s, k));
-				assert(fabs(3.988 - value(f, s, k)) <= 1e-3);
-				assert(fabs(0.520 - delta(f, s, k)) <= 1e-3);
+				ensure(s / 2 == moneyness(f, s, k));
+				ensure(fabs(3.988 - value(f, s, k)) <= 1e-3);
+				ensure(fabs(0.520 - delta(f, s, k)) <= 1e-3);
 
 				double v = value(f, s, k);
 				double s_ = implied(f, v, k, 0.2, eps);
-				assert(fabs(s_ - s) <= eps);
+				ensure(fabs(s_ - s) <= eps);
 			}
 
 			return 0;

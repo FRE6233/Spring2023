@@ -43,6 +43,35 @@ double WINAPI xll_black_put_value(double f, double s, double k, HANDLEX h)
 	return result;
 }
 
+AddIn xai_black_call_value(
+	Function(XLL_DOUBLE, "xll_black_call_value", "BLACK.CALL.VALUE")
+	.Arguments({
+		Arg(XLL_DOUBLE, "f", "is the forward value."),
+		Arg(XLL_DOUBLE, "s", "is the vol."),
+		Arg(XLL_DOUBLE, "k", "is the strike."),
+		Arg(XLL_HANDLEX, "h", "is a handle to a distribution. Default is normal."),
+		})
+		.FunctionHelp("Return the Fischer Black value of a call.")
+	.Category(CATEGORY)
+);
+double WINAPI xll_black_call_value(double f, double s, double k, HANDLEX h)
+{
+#pragma XLLEXPORT
+	double result = NaN;
+
+	try {
+		const fms::distribution::standard<>* p = distribution_pointer(h);
+		ensure(p);
+
+		result = black::call::value(f, s, k, p);
+	}
+	catch (const std::exception& ex) {
+		XLL_ERROR(ex.what());
+	}
+
+	return result;
+}
+
 AddIn xai_black_put_delta(
 	Function(XLL_DOUBLE, "xll_black_put_delta", "BLACK.PUT.DELTA")
 	.Arguments({

@@ -88,7 +88,7 @@ namespace fms {
 					X F = pow(1 - x, -a); // 1F0(a,x)
 					X _F = pFq(1, &a, 0, (const X*)nullptr, x); // 1F0(x)
 					X dF = F - _F;
-					assert(fabs(dF) < 2*Eps<X>);
+					ensure(fabs(dF) < 2*Eps<X>);
 				}
 			}
 		}
@@ -102,12 +102,12 @@ namespace fms {
 				X F = _2F1(one, one, two, -x, Eps<X>);
 				X F_ = log(1 + x) / x;
 				X dF = F - F_;
-				assert(fabs(dF) < Eps<X>);
+				ensure(fabs(dF) < Eps<X>);
 				X one_[] = { 1, 1 };
 				X two_[] = { 2 };
 				X _F = pFq(2, one_, 1, two_, -x);
 				X Fd = _F - F;
-				assert(fabs(_F - F) < std::numeric_limits<X>::epsilon());
+				ensure(fabs(_F - F) < std::numeric_limits<X>::epsilon());
 			}
 		}
 
