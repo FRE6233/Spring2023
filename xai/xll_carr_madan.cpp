@@ -38,6 +38,7 @@ AddIn xai_carr_madan_unfit(
 		.Category(CATEGORY)
 	.FunctionHelp("Inverse of CARR_MADAN.FIT.")
 );
+
 _FPX* WINAPI xll_carr_madan_unfit(_FPX* pk, _FPX* pf)
 {
 #pragma XLLEXPORT
