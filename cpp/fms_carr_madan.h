@@ -5,7 +5,7 @@
 // Let m[i] = (f[i + 1] - f[i])/(k[i + 1] - k[i]), 0 <= i < n - 1, be the slopes over (k[i], k[i + 1]].
 // Let mm[i] = m[i] - m[i - 1] be the jumps at t[i], 1 <= i < n - 1.
 
-// The Carr-Madan formula is determined from data (f(a), mm[0], ..., mm[n - 2], f'(a)) by
+// The Carr-Madan formula is determined from data (f[0], m[0], mm[1],..., mm[n - 2]) by
 // f_(x) = f(a) + f'(a)(x - a) + sum_{k[i] <= a} (k[i] - x)^+ mm[i] + sum_{k[i] > a} (x - k[i])^+ mm[i]
 #pragma once
 #include "ensure.h"
@@ -137,7 +137,7 @@ namespace fms::carr_madan {
 
 	// Replace f with (f[0], (f[1] - f[0])/(k[1] - k[0]), f''(k[1]), ..., f''(k[n - 2]))
 	template<class X, size_t N>
-	inline constexpr void fit(const std::span<X,N>& k, std::span<X,N>& f)
+	inline constexpr void fit(const std::span<X,N>& k, std::span<X,N> f)
 	{
 		auto n = k.size();
 		ensure(n == f.size());
@@ -154,7 +154,7 @@ namespace fms::carr_madan {
 	
 	// unfit(fit(k, f)) leaves f unchanged
 	template<class X, size_t N>
-	inline constexpr void unfit(const std::span<X,N>& k, std::span<X,N>& f)
+	inline constexpr void unfit(const std::span<X,N>& k, std::span<X,N> f)
 	{
 		auto n = k.size();
 		ensure(n == f.size());
@@ -201,7 +201,7 @@ namespace fms::carr_madan {
 	// value pwlinear k, f, using forward x, puts below a, and calls above a
 	template<class X>
 	inline constexpr X value(const X& x, const X& a, const std::span<X>& p, const std::span<X>& c,
-		const std::span<X>& k, std::span<X>& f)
+		const std::span<X>& k, std::span<X> f)
 	{
 		size_t n = p.size();
 		ensure(n == c.size());

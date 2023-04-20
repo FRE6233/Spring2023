@@ -23,8 +23,7 @@ AddIn xai_carr_madan_fit(
 _FPX* WINAPI xll_carr_madan_fit(_FPX* pk, _FPX* pf)
 {
 #pragma XLLEXPORT
-	auto f = span(pf); // need l-value
-	carr_madan::fit(span(pk), f);
+	carr_madan::fit(span(pk), span(pf));
 
 	return pf;
 }
@@ -42,8 +41,7 @@ AddIn xai_carr_madan_unfit(
 _FPX* WINAPI xll_carr_madan_unfit(_FPX* pk, _FPX* pf)
 {
 #pragma XLLEXPORT
-	auto f = span(pf); // need l-value
-	carr_madan::unfit(span(pk), f);
+	carr_madan::unfit(span(pk), span(pf));
 
 	return pf;
 }
@@ -67,7 +65,7 @@ double WINAPI xll_carr_madan_value(double f0, double k0, _FPX* pp, _FPX* pc, _FP
 	double result = std::numeric_limits<double>::quiet_NaN();
 
 	try {
-		//!!!Implement
+		result = carr_madan::value(f0, k0, span(pp), span(pc), span(pk), span(pf));
 	}
 	catch (const std::exception& ex) {
 		XLL_ERROR(ex.what());

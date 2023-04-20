@@ -63,6 +63,9 @@
     <ClInclude Include="fms_carr_madan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="fms_american.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fms.t.cpp">
