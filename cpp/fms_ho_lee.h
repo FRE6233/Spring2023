@@ -1,4 +1,4 @@
-﻿// fms_holee.h - Ho-Lee model f_t = r + σ B_t
+﻿// fms_ho_lee.h - Ho-Lee model f_t = r + σ B_t
 // D_t(u) = E_t[D_u/D_t] = exp(-r (u - t) + σ^2 (u - t)^3/6 + σ (u - t) B_t)
 #pragma once
 #include <cmath>
@@ -7,10 +7,10 @@
 namespace fms {
 
 	template<class R = double, class S = double, class T = double>
-	struct holee {
+	struct ho_lee {
 		R r;
 		S σ;
-		holee(const R& r, const S& s)
+		ho_lee(const R& r, const S& s)
 			: r{ r }, σ{ s }
 		{ }
 
@@ -53,7 +53,7 @@ namespace fms {
 
 	// E[max{k - f_t,0} D_t] = ???
 	template<class R, class S, class T>
-	inline auto floorlet(const holee<R, S, T>& m, R k, T t)
+	inline auto floorlet(const ho_lee<R, S, T>& m, R k, T t)
 	{
 		R k_ = k + m.convexity(t);
 		R f = m.r;

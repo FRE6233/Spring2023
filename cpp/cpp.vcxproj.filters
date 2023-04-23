@@ -57,13 +57,13 @@
     <ClInclude Include="fms_bachelier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fms_holee.h">
+    <ClInclude Include="fms_ho_lee.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="fms_carr_madan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fms_american.h">
+    <ClInclude Include="fms_binomial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -12,7 +12,7 @@
 #include "fms_fixed_income.h"
 #include "fms_bootstrap.h"
 #include "fms_carr_madan.h"
-#include "fms_american.h"
+#include "fms_binomial.h"
 
 using namespace fms;
 
@@ -79,7 +79,9 @@ int main()
 		carr_madan::test_index();
 		carr_madan::test_tangent();
 		carr_madan::test_fit<double>();
-		american::binomial::test();
+		binomial::fill_test();
+		binomial::european::test();
+		binomial::american::test();
 	}
 	catch (const std::exception& ex) {
 		std::cerr << ex.what() << std::endl;;

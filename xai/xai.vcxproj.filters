@@ -41,11 +41,17 @@
     <ClCompile Include="xll_bachelier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="xll_holee.cpp">
+    <ClCompile Include="xll_ho_lee.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="xll_carr_madan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="xll_binomial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\xll\Visualizers\oper.natvis" />
   </ItemGroup>
 </Project>

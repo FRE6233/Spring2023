@@ -150,6 +150,7 @@
     <ClInclude Include="xai.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="xll_binomial.cpp" />
     <ClCompile Include="xll_array_sequence.cpp" />
     <ClCompile Include="xll_bachelier.cpp" />
     <ClCompile Include="xll_bootstrap.cpp" />
@@ -158,12 +159,15 @@
     <ClCompile Include="xll_black.cpp" />
     <ClCompile Include="xll_distribution_double_exponential.cpp" />
     <ClCompile Include="xll_distribution_normal.cpp" />
-    <ClCompile Include="xll_holee.cpp" />
+    <ClCompile Include="xll_ho_lee.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\xll\xll.vcxproj">
       <Project>{367249bb-b8a3-4671-b095-a5db904dbd6d}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\xll\Visualizers\oper.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
