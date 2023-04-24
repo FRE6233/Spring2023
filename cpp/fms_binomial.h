@@ -13,6 +13,7 @@ namespace fms::binomial {
 	template<class X>
 	constexpr X NaN = std::numeric_limits<X>::quiet_NaN();
 
+	// F_k(j)
 	template<class X>
 	constexpr X forward(X f, X s, size_t n, size_t k, size_t j)
 	{
@@ -83,6 +84,26 @@ namespace fms::binomial {
 	}
 #endif // _DEBUG
 
+	// Skewed Random Walk
+	// Let P(X_j = 1) = p, P(X_j = -1) = 1 - p be independent and Wp_n = a_n sum_j X_j - b_n
+	// Note E[X_j] = 2p - 1 and Var(X_j) = 4p(1 - p).
+	// Define Fp_n = f exp(s Wp_n)/cp_n where cp_n = E[s Wp_n].
+	// !!! Find a_n and b_n such that E[Fp_n] = f and Var(log Fp_n) = s^2
+	// Fp_k(j)
+	template<class X>
+	constexpr X forwardp(X f, X s, X p, size_t n, size_t k, size_t j)
+	{
+		ensure(p > 0 and 1 - p > 0);
+
+		return 0; //!!! Implement
+	}
+
+	// Populate Fp_n(j) at step n = F.size() - 1
+	template<class X, size_t N>
+	constexpr size_t fillp(X f, X s, X p, std::span<X, N> F)
+	{
+		return 0; // !!! Implement
+	}
 
 	namespace european {
 
@@ -95,6 +116,14 @@ namespace fms::binomial {
 			}
 
 			return std::span<X>(v.begin(), v.size() - 1);
+		}
+
+		// { v[0], ..., v[n-1] } => { (v[0] (1 - p) + v[1] p, ..., v[n-2] (1 - p) + v[n-1] p }
+		// !!! Implement stepp(X p, std::span<X, N> v)
+		template<class X, size_t N>
+		constexpr auto stepp(X p, std::span<X, N> v)
+		{
+			return v; // !!! Implement
 		}
 
 		template<class Phi, class X, size_t N>
@@ -110,6 +139,22 @@ namespace fms::binomial {
 
 			return v[0];
 		}
+
+		// !!! Implement XLL.BINOMIAL.EUROPEANP in xll_binomial.cpp
+		template<class Phi, class X, size_t N>
+		X valuep(X f, X s, X p, Phi phi, std::span<X, N> v)
+		{
+			fillp(f, s, p, v);
+			// Apply phi to F
+			std::transform(v.begin(), v.end(), v.begin(), phi);
+			// Expected value
+			while (v.size() > 1) {
+				v = step(v);
+			}
+
+			return v[0];
+		}
+
 
 #ifdef _DEBUG
 		inline int test()
@@ -200,7 +245,7 @@ namespace fms::binomial {
 				auto p = [=](double x) { return std::max(k - x, 0.); };
 				double va = value(f, s, p, std::span(v, 101));
 				double ve = european::value(f, s, p, std::span(v, 101));
-				ensure(va == ve);
+				ensure(va > ve);
 			}
 
 			return 0;

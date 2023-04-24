@@ -36,7 +36,9 @@ double WINAPI xll_binomial_european(double f, double s, double k, long n)
 
 	return v0;
 }
-#if 0
+
+// !!! Implement XLL.BINOMIAL.EUROPEANP based on XLL.BINOMIAL.EUROPEAN
+
 AddIn xai_binomial_american(
 	Function(XLL_DOUBLE, "xll_binomial_american", "XLL.BINOMIAL.AMERICAN")
 	.Arguments({
@@ -68,4 +70,3 @@ double WINAPI xll_binomial_american(double f, double s, double k, long n)
 
 	return v0;
 }
-#endif // 0
