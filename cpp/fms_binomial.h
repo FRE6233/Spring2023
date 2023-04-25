@@ -1,6 +1,9 @@
 // fms_american.h - American option pricing
-// F_k = f exp(s W_k/sqrt(n))/cosh^k(s/sqrt(n)) where W_k is random walk
-// E[F_n] = f, Var(log F_n) = s^2
+// V_k = Y_1 + ... + Y_k, P(Y_j = 0) = 1/2 = P(Y_j = 1).
+// W_k = X_1 + ... + X_k, P(X_j = 1) = 1/2 = P(X_j = -1), X_j = 2Y_j - 1.
+// E[X_j] = 0, E[exp(s X_j)] = (exp(s) + exp(-s))/2 = cosh s.
+// F_k = f exp(s W_k/sqrt(n))/cosh^k(s/sqrt(n)).
+// E[F_n] = f, Var(log F_n) = s^2.
 #pragma once
 #include "ensure.h"
 #include <cmath>
@@ -149,7 +152,7 @@ namespace fms::binomial {
 			std::transform(v.begin(), v.end(), v.begin(), phi);
 			// Expected value
 			while (v.size() > 1) {
-				v = step(v);
+				v = stepp(v);
 			}
 
 			return v[0];
