@@ -31,10 +31,10 @@ double WINAPI xll_black_put_value(double f, double s, double k, HANDLEX h)
 	double result = NaN;
 
 	try {
-		const fms::distribution::standard<>* p = distribution_pointer(h);
+		handle<fms::distribution::standard<>> p(h);
 		ensure(p);
 
-		result = black::put::value(f, s, k, p);
+		result = black::put::value(f, s, k, p.ptr());
 	}
 	catch (const std::exception& ex) {
 		XLL_ERROR(ex.what());
@@ -60,10 +60,10 @@ double WINAPI xll_black_call_value(double f, double s, double k, HANDLEX h)
 	double result = NaN;
 
 	try {
-		const fms::distribution::standard<>* p = distribution_pointer(h);
+		handle<fms::distribution::standard<>> p(h);
 		ensure(p);
 
-		result = black::call::value(f, s, k, p);
+		result = black::call::value(f, s, k, p.ptr());
 	}
 	catch (const std::exception& ex) {
 		XLL_ERROR(ex.what());
@@ -89,10 +89,10 @@ double WINAPI xll_black_put_delta(double f, double s, double k, HANDLEX h)
 	double result = NaN;
 
 	try {
-		const fms::distribution::standard<>* p = distribution_pointer(h);
+		handle<fms::distribution::standard<>> p(h);
 		ensure(p);
 
-		result = black::put::delta(f, s, k, p);
+		result = black::put::delta(f, s, k, p.ptr());
 	}
 	catch (const std::exception& ex) {
 		XLL_ERROR(ex.what());

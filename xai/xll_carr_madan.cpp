@@ -5,12 +5,6 @@
 using namespace fms;
 using namespace xll;
 
-// convert _FPX* to std::span
-inline constexpr auto span(_FPX* pa)
-{
-	return std::span(pa->array, size(*pa));
-}
-
 AddIn xai_carr_madan_fit(
 	Function(XLL_FPX, "xll_carr_madan_fit", "CARR_MADAN.FIT")
 	.Arguments({

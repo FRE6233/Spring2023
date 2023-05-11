@@ -66,6 +66,12 @@
     <ClInclude Include="fms_binomial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="fms_distribution_poisson.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fms_distribution_discrete.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fms.t.cpp">

@@ -140,11 +140,13 @@
     <ClInclude Include="fms_bsm.h" />
     <ClInclude Include="fms_carr_madan.h" />
     <ClInclude Include="fms_distribution.h" />
+    <ClInclude Include="fms_distribution_discrete.h" />
     <ClInclude Include="fms_distribution_double_exponential.h" />
     <ClInclude Include="fms_distribution_normal.h" />
     <ClInclude Include="fms_fixed_income.h" />
     <ClInclude Include="fms_ho_lee.h" />
     <ClInclude Include="fms_hypergeometric.h" />
+    <ClInclude Include="fms_distribution_poisson.h" />
     <ClInclude Include="fms_pwflat.h" />
     <ClInclude Include="fms_root1d.h" />
     <ClInclude Include="fms_secant.h" />

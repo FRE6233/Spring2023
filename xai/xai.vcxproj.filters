@@ -50,6 +50,9 @@
     <ClCompile Include="xll_binomial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="xll_distribution_discrete.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="..\xll\Visualizers\oper.natvis" />

@@ -159,6 +159,7 @@
     <ClCompile Include="xll_black.cpp" />
     <ClCompile Include="xll_distribution_double_exponential.cpp" />
     <ClCompile Include="xll_distribution_normal.cpp" />
+    <ClCompile Include="xll_distribution_discrete.cpp" />
     <ClCompile Include="xll_ho_lee.cpp" />
   </ItemGroup>
   <ItemGroup>

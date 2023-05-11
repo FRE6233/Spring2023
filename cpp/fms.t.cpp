@@ -3,6 +3,7 @@
 #include <iostream>
 #include "fms_distribution_normal.h"
 #include "fms_distribution_double_exponential.h"
+#include "fms_distribution_discrete.h"
 #include "fms_hypergeometric.h"
 #include "fms_bachelier.h"
 #include "fms_black_normal.h"
@@ -73,6 +74,7 @@ int main()
 		fms::test_hypergeometric<>();
 		distribution::normal<>::test();
 		distribution::double_exponential<>::test();
+		distribution::discrete<>::test();
 		black::normal::put::test();
 		bachelier::put::test();
 		bsm::test_Dfs();

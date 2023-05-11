@@ -8,6 +8,9 @@ namespace fms::distribution {
 	template<class X = double, class S = X>
 	struct standard {
 
+		virtual ~standard()
+		{ }
+
 		// Probability share density function f_s(x) = e^{sX - κ(s)} f(x)
 		X pdf(const X& x, const S& s = 0) const
 		{
