@@ -75,7 +75,7 @@ namespace fms::distribution {
 
 		// Find x for which q = E[e^{sX}/E[e^{sX}] 1(X <= x)]
 		// Note the graph contains the points (e^{s x_i}/E[e^{s X}], p_i)
-		X inv(const X& q, const S& s)
+		X inv(const X& q, const S& s = 0)
 		{
 			ensure(q >= 0);
 			auto mgfs = _mgf(s);
@@ -96,7 +96,7 @@ namespace fms::distribution {
 				X x[] = { 0, 1 };
 				X p[] = { 0.5, 0.5 };
 				discrete D(2, x, p);
-				D.normalize();
+				D.standardize();
 				ensure(D.x[0] == -1);
 				ensure(D.x[1] == 1);
 				for (auto s : { X(-0.1), X(0.), X(0.1) }) {
