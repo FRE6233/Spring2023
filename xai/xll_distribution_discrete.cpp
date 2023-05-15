@@ -49,9 +49,10 @@ double WINAPI xll_distribution_discrete_inv(HANDLEX h, double p, double s)
 	double F = NaN;
 
 	try {
-		handle<distribution::discrete<>> h_(h);
+		handle<distribution::standard<>> h_(h);
 		ensure(h_);
-		F = h_->inv(p, s);
+		
+		F = h_.as<distribution::discrete<>>()->inv(p, s);
 	}
 	catch (const std::exception& ex) {
 		XLL_ERROR(ex.what());

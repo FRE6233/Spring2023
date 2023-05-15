@@ -53,12 +53,10 @@ namespace fms::distribution {
 		// E[e^{sX}/E[e^{sX}] 1(X <= z)]
 		X _cdf(const X& z, const S& s) const override
 		{
-			//auto esx = std::exp(s * x);
-			//esx[x > z] = 0;
+			auto esx = std::exp(s * x);
+			esx[x > z] = 0;
 
-			//return (esx*p).sum()/_mgf(s);
-			
-			return 0; //!!! implement your algorithm
+			return (esx*p).sum()/_mgf(s);
 		}
 
 		// E[e^{s X}]
@@ -74,19 +72,16 @@ namespace fms::distribution {
 		}
 
 		// Find x for which q = E[e^{sX}/E[e^{sX}] 1(X <= x)]
-		// Note the graph contains the points (e^{s x_i}/E[e^{s X}], p_i)
 		X inv(const X& q, const S& s = 0)
 		{
 			ensure(q >= 0);
-			auto mgfs = _mgf(s);
-
-			if (q <= p[0]) {
-				return std::exp(s * x[0]) / mgfs;
+			
+			size_t i = 0;
+			while (i < x.size() and q > _cdf(x[i], s)) {
+				++i;
 			}
-			ensure(q <= 1);
-			//!!! Hint: find largest i with q <= p[0] + ... + p[i]
 
-			return 0;
+			return x[i];
 		}
 
 #ifdef _DEBUG
